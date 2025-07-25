@@ -1,0 +1,83 @@
+{
+  "name": "interview-assistant-pro",
+  "version": "1.0.0",
+  "description": "AI-powered interview assistant with real-time audio processing and undetectable overlay",
+  "main": "src/main/main.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "concurrently \"npm run start:react\" \"wait-on http://localhost:3000 && npm run start:electron\"",
+    "start:react": "cd src/renderer && npm start",
+    "start:electron": "electron .",
+    "build": "npm run build:react && npm run build:electron",
+    "build:react": "cd src/renderer && npm run build",
+    "build:electron": "electron-builder",
+    "dist": "npm run build && electron-builder --publish=never",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "dev": "concurrently \"npm run start:react\" \"wait-on http://localhost:3000 && NODE_ENV=development electron .\"",
+    "test": "jest"
+  },
+  "keywords": [
+    "interview",
+    "assistant",
+    "ai",
+    "speech-to-text",
+    "overlay",
+    "electron"
+  ],
+  "author": "InterviewAssistant Pro Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "jest": "^29.7.0",
+    "wait-on": "^7.0.1"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.12",
+    "axios": "^1.6.0",
+    "electron-store": "^8.1.0",
+    "form-data": "^4.0.0",
+    "openai": "^4.20.0",
+    "socket.io-client": "^4.7.4",
+    "ws": "^8.14.0"
+  },
+  "build": {
+    "appId": "com.interviewassistant.pro",
+    "productName": "Interview Assistant Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/main/**/*",
+      "src/renderer/build/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist"
+    },
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        }
+      ]
+    }
+  }
+}
